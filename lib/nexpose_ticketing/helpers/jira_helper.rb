@@ -315,7 +315,7 @@ class JiraHelper < BaseHelper
     CSV.parse(vulnerability_list.chomp, headers: :first_row)  do |row|
       @nxid = @mode_helper.get_nxid(nexpose_identifier_id, row)
       # Query Jira for the ticket by unique id (generated NXID)
-      query_string = "jql=project=#{@service_data[:project]} AND description ~ \"NXID: #{@nxid}\" AND (status != #{@service_data[:close_step_name]})&fields=key"
+      query_string = "jql=project=#{@service_data[:project]} AND description ~ \"NXID: #{@nxid}\" AND (status != #{@service_data[:close_step_name]})"
       queried_key = get_jira_key(query_string, @nxid)
       if queried_key.nil? || queried_key.empty?
         @log.log_message("Error when closing tickets - query for NXID <#{@nxid}> should have returned a Jira key!!")
@@ -398,7 +398,7 @@ class JiraHelper < BaseHelper
         next
       end
 
-      query_string = "jql=project=#{@service_data[:project]} AND description ~ \"#{nxid.strip}\" AND (status != #{@service_data[:close_step_name]})&fields=key"
+      query_string = "jql=project=#{@service_data[:project]} AND description ~ \"#{nxid.strip}\" AND (status != #{@service_data[:close_step_name]})"
       queried_key = get_jira_key(query_string, nxid)
       ticket_key_pair = []
       ticket_key_pair << queried_key
